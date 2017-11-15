@@ -22,8 +22,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-# twitter_demo
-# twitter_demo
-# twitter_demo
-# twitter_demo
-# twitter_demo
