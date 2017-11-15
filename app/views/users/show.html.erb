@@ -1,0 +1,100 @@
+<p id="notice"><%= notice %></p>
+<div class="container main-block">
+  <div class="container col-sm-6 panel panel-info user-info">
+    <div>
+      <h4>Your Twitter Profile</h4>
+      <div class="panel-heading">
+        <p>
+          <%= image_tag @user.photo.url(:medium) %>
+        </p>
+          <strong>Name:</strong>
+          <h2><%= @user.name %></h2>
+        </p>
+      </div>
+      <div class="panel-body">
+        <p><strong>Email:</strong>
+           <h4><%= @user.email %></h4>
+        </p>
+      </div>
+      <button type="button" class="btn btn-success">
+        <span class="glyphicon glyphicon-pencil"></span>
+          <%= link_to 'Edit', edit_user_path(@user) %>
+      </button>
+      <button type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>        
+          <%= link_to 'Back', users_path %>
+      </button>
+    </div>
+
+    <div>
+      <h2>Following</h2>
+      <ul>
+        <% for relation in @user.relations %>
+          <li>
+            <%=h relation.friend.name %>
+            (<%= link_to "remove", relation, :method => :delete %>)
+          </li>
+        <% end %>
+      </ul>
+
+
+      <p>
+        <% if current_user.id == @user.id %>
+         <%= link_to "Find Friends", users_path %></p>
+        <% end %>
+      <h2>Followers</h2>
+      <ul>
+        <% for user in @user.inverse_friends %>
+          <li><%=h user.name %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container col-sm-6 panel panel-info tweets">
+    <%= form_for([@user, @user.tweets.build]) do |form| %>
+      <% if current_user.id == @user.id %>
+        <%= form.label :Tweet_here %>
+        <%= form.text_area :tweet_body, cols: "75", rows: "3" %>
+        <p>
+          <button type="button" class="btn btn-info">
+            <span class="glyphicon glyphicon-ok"></span>  
+            <%= form.submit :class=>"btn btn-info" %>
+          </button>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="container col-sm-6 panel panel-info tweets">
+    <strong>Tweets by <%= @user.name %></strong>
+    <% @user.tweets.order("created_at desc").each do |t| %>
+      <% if t.tweet_body.present? %>
+        <div class="container tweet_each" >
+          <p style="margin-top: 15px;"> 
+            <strong>Tweet:</strong>
+            <%= t.tweet_body %>
+          </p>
+          <p>
+            Posted <%= time_ago_in_words(t.created_at) %> ago
+          </p>
+          <p>
+          <%# binding.pry %>
+          <button type="button" class="btn btn-info">
+            <span class="glyphicon glyphicon-eye-open"></span> 
+              <%= link_to 'show', user_tweet_path(t.user_id, t.id) %>
+          </button>
+          <% if current_user.id == @user.id %>
+            <button type="button" class="btn btn-warning">
+              <span class="glyphicon glyphicon-eye-open"></span> 
+                <%= link_to 'Delete', user_tweet_path(t.user_id, t.id), 
+                              :method => :delete, 
+                              data: {confirm: "Are you sure?"},remote: true%>
+            </button>
+            <% end %>
+          </p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

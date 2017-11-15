@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TwitterDemo</title>
+    <%= csrf_meta_tags %>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body style="background-color: rgb(134, 214, 218)">
+  <header >
+  <div id="user_nav" class="pull-right" style="background-color: #79589f;">
+	  <% if user_signed_in? %>
+	    Signed in as <strong><%= current_user.name %></strong>
+       <button type="button" class="btn btn-danger">
+        <span class="glyphicon glyphicon-play"></span> 
+	     <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :style=> "color: white;" %>
+      </button>
+	  <% else %>
+     <button type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-play"></span> 
+	     <%= link_to "Sign up", new_user_registration_path %></button> or 
+       <button type="button" class="btn btn-success">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <%= link_to "sign in", new_user_session_path %>
+       </button>
+      
+	  <% end %>
+  </div>
+    </header>
+  <div class="container">
+    <%= yield %>
+  </div>
+  </body>
+</html>

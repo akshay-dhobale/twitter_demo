@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<h1 class="container">Users</h1>
+<div class="container col-sm-6">
+  <table>
+    <thead>
+      <tr class="panel panel-heading">
+        <!-- <th>Photo</th><th></th> -->
+        <th>Name</th><th></th>
+        <th>Email</th>
+        <th colspan="3"></th>
+      </tr>
+
+    </thead>
+
+    <tbody class="panel-body">
+
+      <!-- <p>    <strong>All Users Other Than You</strong></p> -->
+      <% @users.each do |user| %>
+        <% if user.id != current_user.id %>
+          <tr>
+          <%# image_tag user.photo.url(:thumb) %>
+            <td><%= user.name %></td><td></td>
+            <td><%= user.email %></td>
+            <td><button class="btn btn-success navbar-btn">
+              <%= link_to 'Show', user, :style=>"color: white;" %></td></button>
+            <td><button class="btn btn-info navbar-btn">
+                  <%= link_to 'Edit', edit_user_path(user), :style=>"color: white;" %>
+                  </button>
+            </td>
+            <!-- <td>
+            <!-- <button class="btn btn-danger navbar-btn"> -->
+            <%#= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, :style=>"color: white;"  %><!-- </button> -->
+            <!-- </td> -->
+            <td>
+              <button class="btn btn-success navbar-btn">
+                <%= link_to "Add Friend", relations_path(:friend_id => user), :method => :post%>
+              </button>
+            </td>
+          </tr>
+          <% else %>
+          <button class="btn btn-success navbar-btn">
+            <%= link_to 'Your Profile', user, :style=>"color: white;" %></td></button>
+          <button class="btn btn-info navbar-btn">
+            <%= link_to 'Edit', edit_user_path(user), :style=>"color: white;" %>
+          </button>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Tweet by all users  -->
+<div class="container col-sm-6 panel panel-info tweets">
+  <strong>All Tweets By People you follow</strong>
+  <% @friend_tweet.order("created_at desc").each do |t| %>
+    <%# binding.pry %>
+    <%# if t.user_id != current_user.id %>
+      <div class="container tweet_each" >
+         <strong>Tweet by :</strong>
+          <%= t.user.name %>
+        <p style="margin-top: 15px;"> 
+          <strong>Tweet:</strong>
+          <%= t.tweet_body %>
+        </p>
+        <P>
+          Posted <%= time_ago_in_words(t.created_at) %> ago
+
+        </P>
+        <p>
+        <%# binding.pry %>
+        <button type="button" class="btn btn-info">
+          <span class="glyphicon glyphicon-eye-open"></span> 
+            <%= link_to 'show', user_tweet_path(t.user_id, t.id) %>
+        </button>
+        <% if current_user.id == t.user_id %>
+          <button type="button" class="btn btn-warning">
+            <span class="glyphicon glyphicon-eye-open"></span> 
+              <%= link_to 'Delete', user_tweet_path(t.user_id, t.id), 
+                              :method => :delete, 
+                              data: {confirm: "Are you sure?"},remote: true%>
+          </button>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+
+<!-- <button class="btn btn-danger navbar-btn"> -->
+<%#= link_to 'New User', new_user_path, :style=>"color: white;" %>
+<!-- </button> -->
+

@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+<div class="container main-block">
+  <div class="container col-sm-6 panel panel-info tweet-info">
+    <h1>Tweet:</h1>
+      <div class="panel-heading">
+    <p>
+      <strong>Tweet body:</strong>
+      <h3><%= @tweet.tweet_body %></h3>
+    </p>
+    </div>
+    <div class="panel-body">
+      <p>
+        <strong>User:</strong>
+        <%= @tweet.user.name %>
+      </p>
+    </div>
+
+    <div class="panel-body">
+      <p><%= time_ago_in_words(@tweet.created_at) %> ago</p>
+    </div>
+  
+    <button type="button" class="btn btn-info">
+      <span class="glyphicon glyphicon-arrow-left"></span>  
+      <%= link_to 'Back', user_path(@tweet.user_id) %>
+    </button>
+  </div>
+
+  <div class="container col-sm-6 panel panel-info commentss">
+    <% @tweet.comments.order("created_at desc").each do |c| %>
+      <% if c.comment_body.present? %>
+        <div class="container comment_each" >
+          <p>
+            <strong>Comment:</strong>
+            <%= c.comment_body %>
+          </p>
+
+          <!-- <div><%= link_to 'Delete', tweet_comment_path(c),
+                       method: :delete, 
+                       data: { confirm: 'Are you sure?'} %></div> -->
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <div class="container col-sm-6 panel panel-info comments" style="height: 100%;">
+    <p>Enter Your Comment Here</p>
+    <%= form_for [@tweet, @tweet.comments.build] do |f| %>
+      <div style="margin-top: 13px;">
+        <%= f.text_area :comment_body, cols: "70", rows: "3" %>
+      </div>
+      <button type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-ok"></span>  
+          <%= f.submit "Comment", :class=>"btn btn-info" %>
+      </button>
+    <% end %>
+  </div>
+</div>

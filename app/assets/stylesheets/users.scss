@@ -1,0 +1,26 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.user-info{
+	height:100%;
+}
+
+.tweets{
+	background-color: #ffffff;
+    margin-top: 50px;
+}
+
+.tweet_each{
+	margin-top: 30px;
+	width: 100%;	
+	border: solid 1px #189ddf;
+	
+}
+
+.main-block{
+	display: inline-grid;
+}
+
+.btn-txt {
+  color: white; 
+}
